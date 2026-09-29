@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Fair Fees — `$FEES`
 
-## Getting Started
+Landing page for Fair Fees: a pons v2 token on Robinhood Chain whose 3% creator tax hits a splitter contract, not a founder. The contract pays holders every 60 seconds, pro rata.
 
-First, run the development server:
+Positioning, voice and the copy bank live in `POSITIONING.md` (source of truth for every line on the site).
+
+## Stack
+
+- Next.js 16 (App Router) · React 19 · Tailwind CSS 4
+- [`torph`](https://torph.lochie.me) — text morphing (timer digits, receipt values, the rotating headline line)
+- [`loading-dev`](https://loading.dev) — indicators (`Clock`, `Ripple`, `Wave`, `Orbit`, `Cascade`)
+
+## Develop
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+bun install
 bun dev
+bun run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Before launch
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Everything launch-specific is in `lib/site.ts`. While a value is `null` the site says "Announced at launch" and the Buy buttons scroll to the launch block.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `contract` — splitter contract address
+- `links.buy` — pons v2 trade link
+- `links.x`, `links.chart` — shown in the CTA block and footer once set
 
-## Learn More
+Set `NEXT_PUBLIC_SITE_URL` (e.g. `https://your-domain.xyz`) so Open Graph / Twitter images resolve to the real domain.
 
-To learn more about Next.js, take a look at the following resources:
+## Notes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- The 60-second timer and the receipts in the hero are a **visual clock and sample numbers**, labelled as such on the page. They are not read from the contract. Wire them to on-chain data before presenting them as live.
+- The calculator is illustrative math (`share × 3% × volume`), with a disclaimer on the page.
+- `components/rotating-line.tsx` only uses lines from the copy bank.

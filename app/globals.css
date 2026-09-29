@@ -1,26 +1,275 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-lime: var(--lime);
+  --color-lime-dim: var(--lime-dim);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-bricolage);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  color-scheme: dark;
+  --ink: #0a0b09;
+  --ink-2: #11130e;
+  --ink-3: #1a1d14;
+  --paper: #f1efe4;
+  --paper-2: #e2dfcf;
+  --lime: #c8ff2e;
+  --lime-dim: #8fb81c;
+  --muted: #8d9282;
+  --line: rgb(255 255 255 / 0.09);
+  --background: var(--ink);
+  --foreground: #ecebe3;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--lime);
+  color: var(--ink);
+}
+
+/* Layout */
+.wrap {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1200px;
+  padding-inline: 1.25rem;
+}
+@media (min-width: 640px) {
+  .wrap {
+    padding-inline: 2rem;
+  }
+}
+
+/* Display type: Bricolage, pulled narrow so big numerals stay tight. */
+.display {
+  font-family: var(--font-display), var(--font-sans), sans-serif;
+  font-weight: 800;
+  font-stretch: 85%;
+  letter-spacing: -0.02em;
+  line-height: 0.86;
+}
+
+/* Film grain over everything, very light. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+.dot-grid {
+  background-image: radial-gradient(
+    rgb(255 255 255 / 0.09) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+}
+
+/* Receipt: paper with a serrated bottom edge. */
+.receipt {
+  position: relative;
+  background: var(--paper);
+  color: #14150f;
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+.receipt::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% - 1px);
+  height: 10px;
+  background:
+    linear-gradient(135deg, var(--paper) 5px, transparent 0) 0 0 / 10px 10px,
+    linear-gradient(225deg, var(--paper) 5px, transparent 0) 0 0 / 10px 10px;
+  background-repeat: repeat-x;
+}
+
+/* Marching dashes = the fee stream. */
+.stream-h {
+  height: 2px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--lime) 0 8px,
+    transparent 8px 16px
+  );
+  background-size: 16px 2px;
+  animation: stream 1.2s linear infinite;
+}
+.stream-v {
+  width: 2px;
+  background-image: repeating-linear-gradient(
+    180deg,
+    var(--lime) 0 8px,
+    transparent 8px 16px
+  );
+  background-size: 2px 16px;
+  animation: stream-v 1.2s linear infinite;
+}
+@keyframes stream-v {
+  to {
+    background-position: 0 16px;
+  }
+}
+
+/* Range sliders */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 28px;
+  background: transparent;
+  cursor: pointer;
+  --p: 50%;
+}
+.slider::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--lime) var(--p),
+    rgb(255 255 255 / 0.14) var(--p)
+  );
+}
+.slider::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--lime) var(--p),
+    rgb(255 255 255 / 0.14) var(--p)
+  );
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 24px;
+  width: 24px;
+  margin-top: -9px;
+  border-radius: 999px;
+  background: var(--paper);
+  border: 5px solid var(--lime);
+  box-shadow: 0 0 0 4px rgb(200 255 46 / 0.16);
+  transition: box-shadow 0.15s;
+}
+.slider::-moz-range-thumb {
+  height: 14px;
+  width: 14px;
+  border-radius: 999px;
+  background: var(--paper);
+  border: 5px solid var(--lime);
+  box-shadow: 0 0 0 4px rgb(200 255 46 / 0.16);
+}
+.slider:focus-visible {
+  outline: none;
+}
+.slider:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 7px rgb(200 255 46 / 0.35);
+}
+.slider:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 7px rgb(200 255 46 / 0.35);
+}
+
+/* Scroll reveal, only where the browser can drive it from scroll position. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(28px);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stream-h,
+  .stream-v {
+    animation: none;
+  }
+}
+
+/* Motion primitives */
+.animate-marquee {
+  animation: marquee 38s linear infinite;
+}
+.animate-print {
+  animation: print 0.9s steps(18, end) both;
+}
+.animate-flash {
+  opacity: 0;
+  animation: flash 0.9s ease-out;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes stream {
+  to {
+    background-position: 16px 0;
+  }
+}
+@keyframes print {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 -20px 0);
+  }
+}
+@keyframes flash {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-print,
+  .animate-flash {
+    animation: none;
+  }
 }
