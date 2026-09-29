@@ -14,8 +14,8 @@ export default function Image() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#0a0b09",
-          color: "#ecebe3",
+          background: "#0b0b0c",
+          color: "#ececea",
           padding: 72,
           fontFamily: "sans-serif",
         }}
@@ -28,17 +28,17 @@ export default function Image() {
             fontSize: 30,
             letterSpacing: 4,
             textTransform: "uppercase",
-            color: "#8d9282",
+            color: "#8a8a90",
           }}
         >
           <div
             style={{
               display: "flex",
-              width: 56,
-              height: 56,
-              borderRadius: 16,
-              background: "#c8ff2e",
-              color: "#0a0b09",
+              width: 52,
+              height: 52,
+              borderRadius: 10,
+              background: "#c6f432",
+              color: "#0b0b0c",
               alignItems: "center",
               justifyContent: "center",
               fontSize: 40,
@@ -55,13 +55,13 @@ export default function Image() {
             display: "flex",
             flexDirection: "column",
             fontSize: 190,
-            fontWeight: 800,
-            lineHeight: 0.9,
-            letterSpacing: -8,
+            fontWeight: 500,
+            lineHeight: 0.95,
+            letterSpacing: -7,
           }}
         >
           <div style={{ display: "flex" }}>
-            The&nbsp;<span style={{ color: "#c8ff2e" }}>3%</span>
+            The&nbsp;<span style={{ color: "#c6f432" }}>3%</span>
           </div>
           <div style={{ display: "flex" }}>is yours.</div>
         </div>
@@ -71,7 +71,7 @@ export default function Image() {
             display: "flex",
             fontSize: 30,
             letterSpacing: 2,
-            color: "#c8ff2e",
+            color: "#c6f432",
           }}
         >
           3% creator tax → holders. every 60s.

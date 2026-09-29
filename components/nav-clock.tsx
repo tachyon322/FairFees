@@ -11,9 +11,9 @@ export function NavClock() {
     <a
       href="#top"
       aria-label="Split cycle"
-      className="hidden items-center gap-2 rounded-full border border-line bg-white/[0.03] py-1.5 pr-3 pl-2 font-mono text-xs text-lime sm:flex"
+      className="hidden items-center gap-2 font-mono text-xs text-muted transition-colors hover:text-foreground sm:flex"
     >
-      <Ripple size={16} />
+      <Ripple size={14} color="var(--lime)" />
       <span className="tabular-nums">
         <TextMorph as="span" duration={350}>
           {clock(left)}

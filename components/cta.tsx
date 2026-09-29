@@ -5,57 +5,53 @@ const facts: [string, string][] = [
   ["Chain", site.chain],
   ["Launch", site.launchpad],
   ["Creator tax", `${site.tax}% → holders`],
-  ["Split", `every ${site.cadence}s, pro rata`],
+  ["Split", `Every ${site.cadence}s, pro rata`],
   ["Contract", site.contract ?? "Announced at launch"],
 ];
 
 export function Cta() {
   return (
-    <section id="launch" className="relative py-12 sm:py-20">
-      <div className="wrap">
-        <div className="reveal relative overflow-hidden rounded-[36px] bg-lime p-7 text-ink sm:rounded-[48px] sm:p-14">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -top-1/3 -right-1/4 size-[520px] rounded-full bg-white/30 blur-[90px]"
-          />
+    <section id="launch" className="py-20 sm:py-28">
+      <div className="wrap grid gap-14 lg:grid-cols-[1.4fr_0.8fr] lg:items-end lg:gap-16">
+        <h2 className="reveal display text-[clamp(2.6rem,5.2vw,4.6rem)]">
+          Hold <span className="text-lime">{site.ticker}</span>.
+          <br />
+          Take the tax.
+          <br />
+          <span className="text-muted">Every {site.cadence} seconds.</span>
+        </h2>
 
-          <h2 className="display relative text-[clamp(3.4rem,10.5vw,9rem)]">
-            Hold {site.ticker}.
-            <br />
-            Take the tax.
-            <br />
-            Every {site.cadence} seconds.
-          </h2>
-
-          <div className="relative mt-12 grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
-            <dl className="grid grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-3">
-              {facts.map(([k, v]) => (
-                <div key={k}>
-                  <dt className="font-mono text-[11px] tracking-[0.2em] text-ink/70 uppercase">
-                    {k}
-                  </dt>
-                  <dd className="mt-1.5 text-lg font-semibold break-all">{v}</dd>
-                </div>
-              ))}
-            </dl>
-
-            <div className="flex flex-wrap gap-3">
-              <a
-                href={buyHref}
-                className="rounded-full bg-ink px-8 py-4 text-base font-semibold text-lime transition-transform hover:scale-[1.04] active:scale-95"
+        <div className="reveal">
+          <dl className="divide-y divide-line border-y border-line">
+            {facts.map(([k, v]) => (
+              <div
+                key={k}
+                className="flex items-baseline justify-between gap-6 py-3.5 text-sm"
               >
-                Buy {site.ticker}
+                <dt className="font-mono text-[11px] tracking-[0.18em] text-muted uppercase">
+                  {k}
+                </dt>
+                <dd className="text-right font-medium break-all">{v}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <div className="mt-6 flex flex-wrap gap-3">
+            <a
+              href={buyHref}
+              className="rounded-md bg-lime px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-foreground"
+            >
+              Buy {site.ticker}
+            </a>
+            {site.links.x ? (
+              <a
+                href={site.links.x}
+                rel="noreferrer"
+                className="rounded-md border border-line-strong px-6 py-3 text-sm font-medium transition-colors hover:bg-white/[0.05]"
+              >
+                Follow on X
               </a>
-              {site.links.x ? (
-                <a
-                  href={site.links.x}
-                  rel="noreferrer"
-                  className="rounded-full border-2 border-ink px-8 py-[14px] text-base font-semibold transition-colors hover:bg-ink hover:text-lime"
-                >
-                  Follow on X
-                </a>
-              ) : null}
-            </div>
+            ) : null}
           </div>
         </div>
       </div>

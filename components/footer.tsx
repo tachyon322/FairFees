@@ -11,12 +11,12 @@ export function Footer() {
   ];
 
   return (
-    <footer className="mt-16 border-t border-line py-14">
+    <footer className="border-t border-line py-14">
       <div className="wrap grid gap-10 md:grid-cols-[1.2fr_1fr]">
         <div>
           <Logo />
-          <p className="mt-6 max-w-md text-lg text-foreground/90">{pinned}</p>
-          <p className="mt-4 font-mono text-[13px] text-muted">{bio}</p>
+          <p className="mt-6 max-w-md text-base text-foreground/90">{pinned}</p>
+          <p className="mt-4 font-mono text-[12px] text-muted">{bio}</p>
         </div>
 
         <div className="md:justify-self-end">
@@ -25,7 +25,7 @@ export function Footer() {
               <a
                 key={l.label}
                 href={l.href}
-                className="text-sm text-muted transition-colors hover:text-foreground"
+                className="text-[13px] text-muted transition-colors hover:text-foreground"
               >
                 {l.label}
               </a>

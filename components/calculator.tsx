@@ -25,27 +25,28 @@ export function Calculator() {
   const cut = pool * (share / 100);
 
   return (
-    <section id="calculator" className="relative py-20 sm:py-28">
+    <section id="calculator" className="border-b border-line py-20 sm:py-28">
       <div className="wrap">
         <SectionHead
-          eyebrow="02 / Your cut"
+          index="02"
+          label="Your cut"
           title="Your share of supply is your share of the tax."
           lede="1% of supply, 1% of the fees. No tiers, no boosts, no loyal-holder multipliers. The math is share × 3% × volume. Move the sliders."
         />
 
-        <div className="mt-16 grid items-start gap-10 lg:grid-cols-[1fr_0.9fr] lg:gap-16">
-          <div className="reveal rounded-[28px] border border-line bg-ink-2 p-6 sm:p-9">
+        <div className="mt-16 grid items-start gap-8 lg:grid-cols-[1fr_0.9fr] lg:gap-14">
+          <div className="reveal rounded-[10px] border border-line-strong bg-ink-2 p-6 sm:p-8">
             <div>
               <div className="flex items-baseline justify-between">
                 <label
                   htmlFor="share"
-                  className="font-mono text-[11px] tracking-[0.2em] text-muted uppercase"
+                  className="font-mono text-[11px] tracking-[0.18em] text-muted uppercase"
                 >
                   Share of supply
                 </label>
                 <output
                   htmlFor="share"
-                  className="display text-4xl text-lime tabular-nums [font-stretch:90%]"
+                  className="text-4xl font-light tracking-[-0.045em] text-lime tabular-nums"
                 >
                   {share.toFixed(1)}%
                 </output>
@@ -68,7 +69,7 @@ export function Calculator() {
                     type="button"
                     onClick={() => setShare(s)}
                     aria-pressed={share === s}
-                    className="rounded-full border border-line px-3.5 py-1.5 font-mono text-xs text-muted transition-colors hover:text-foreground aria-pressed:border-lime aria-pressed:bg-lime aria-pressed:text-ink"
+                    className="rounded-[5px] border border-line-strong px-3 py-1.5 font-mono text-xs text-muted transition-colors hover:text-foreground aria-pressed:border-foreground aria-pressed:bg-foreground aria-pressed:text-ink"
                   >
                     {s}%
                   </button>
@@ -76,17 +77,17 @@ export function Calculator() {
               </div>
             </div>
 
-            <div className="mt-10 border-t border-dashed border-line pt-9">
+            <div className="mt-9 border-t border-line pt-8">
               <div className="flex items-baseline justify-between">
                 <label
                   htmlFor="volume"
-                  className="font-mono text-[11px] tracking-[0.2em] text-muted uppercase"
+                  className="font-mono text-[11px] tracking-[0.18em] text-muted uppercase"
                 >
                   Volume per minute
                 </label>
                 <output
                   htmlFor="volume"
-                  className="display text-4xl tabular-nums [font-stretch:90%]"
+                  className="text-4xl font-light tracking-[-0.045em] tabular-nums"
                 >
                   {fmtEth(volume)} ETH
                 </output>
@@ -110,18 +111,18 @@ export function Calculator() {
               </div>
             </div>
 
-            <p className="mt-9 text-sm leading-relaxed text-muted">
+            <p className="mt-8 text-[13px] leading-relaxed text-muted">
               Illustrative math, not a forecast. Volume isn’t guaranteed, some
               minutes will be small, and this isn’t yield.
             </p>
           </div>
 
-          <div className="reveal pb-4 lg:pt-6">
+          <div className="reveal overflow-hidden rounded-[10px] border border-line-strong">
             <Receipt
-              className="mx-auto w-full max-w-md rotate-[1.2deg]"
+              className=""
               title="Your receipt"
               subtitle="Illustrative · per 60s drop"
-              stamp="Estimate"
+              tag="Estimate"
               rows={[
                 { label: "Volume / minute", value: `${fmtEth(volume)} ETH` },
                 { label: `Creator tax ${site.tax}%`, value: `${pool.toFixed(4)} ETH` },

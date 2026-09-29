@@ -10,18 +10,13 @@ const rows: [ordinary: string, fair: string][] = [
   ["Tax is extraction", "Tax is the product"],
 ];
 
-const closers = [
-  "Same 3% tax. Different pocket.",
-  "Dev wallet has no pocket.",
-  "We didn’t remove the tax. We rerouted it.",
-];
-
 export function Versus() {
   return (
-    <section className="relative py-20 sm:py-28">
+    <section className="border-b border-line py-20 sm:py-28">
       <div className="wrap">
         <SectionHead
-          eyebrow="03 / Versus everyone else"
+          index="03"
+          label="Versus"
           title={
             <>
               Most tokens bill you.
@@ -31,63 +26,53 @@ export function Versus() {
           }
         />
 
-        <div className="mt-16 grid gap-5 md:grid-cols-2">
-          <div className="reveal rounded-[28px] border border-line bg-ink-2 p-7 sm:p-9">
-            <p className="font-mono text-[11px] tracking-[0.2em] text-muted uppercase">
-              Ordinary pons launch
-            </p>
-            <ul className="mt-7 divide-y divide-line">
-              {rows.map(([ordinary]) => (
-                <li
-                  key={ordinary}
-                  className="flex items-start gap-4 py-5 text-lg text-muted"
-                >
-                  <span
-                    aria-hidden
-                    className="mt-1 grid size-5 shrink-0 place-items-center rounded-full border border-line text-[11px] leading-none"
-                  >
-                    ✕
-                  </span>
-                  {ordinary}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="reveal relative rounded-[28px] border border-lime/40 bg-lime/[0.04] p-7 shadow-[0_0_80px_-30px_rgb(200_255_46/0.5)] sm:p-9">
-            <p className="font-mono text-[11px] tracking-[0.2em] text-lime uppercase">
+        <div className="mt-16 border-t border-line-strong">
+          <div
+            aria-hidden
+            className="hidden grid-cols-2 border-b border-line font-mono text-[11px] tracking-[0.18em] uppercase md:grid"
+          >
+            <p className="py-4 text-muted">Ordinary pons launch</p>
+            <p className="flex items-center gap-2.5 border-l border-line py-4 pl-8">
+              <span className="size-1.5 rounded-full bg-lime" />
               Fair Fees
             </p>
-            <ul className="mt-7 divide-y divide-lime/15">
-              {rows.map(([, fair]) => (
-                <li
-                  key={fair}
-                  className="flex items-start gap-4 py-5 text-lg font-medium"
-                >
-                  <span
-                    aria-hidden
-                    className="mt-1 grid size-5 shrink-0 place-items-center rounded-full bg-lime text-[11px] leading-none font-bold text-ink"
-                  >
-                    ✓
+          </div>
+
+          <ul>
+            {rows.map(([ordinary, fair]) => (
+              <li
+                key={fair}
+                className="reveal grid border-b border-line md:grid-cols-2"
+              >
+                <p className="pt-6 text-lg text-muted md:py-6">
+                  <span className="mb-1.5 block font-mono text-[10px] tracking-[0.18em] uppercase md:hidden">
+                    Ordinary pons launch
+                  </span>
+                  {ordinary}
+                </p>
+                <p className="pt-4 pb-6 text-lg md:border-l md:border-line md:py-6 md:pl-8">
+                  <span className="mb-1.5 flex items-center gap-2 font-mono text-[10px] tracking-[0.18em] text-lime uppercase md:hidden">
+                    <span className="size-1.5 rounded-full bg-lime" />
+                    Fair Fees
                   </span>
                   {fair}
-                </li>
-              ))}
-            </ul>
-          </div>
+                </p>
+              </li>
+            ))}
+          </ul>
         </div>
 
-        <div className="mt-20 space-y-2 sm:mt-28">
-          {closers.map((line, i) => (
-            <p
-              key={line}
-              className={`reveal display text-[clamp(2rem,6.4vw,5.25rem)] text-balance ${
-                i === 0 ? "text-foreground" : i === 1 ? "text-foreground/55" : "text-lime"
-              }`}
-            >
-              {line}
-            </p>
-          ))}
+        <div className="mt-20 divide-y divide-line border-y border-line sm:mt-28">
+          <p className="reveal display py-6 text-[clamp(1.6rem,3.6vw,3rem)] text-balance">
+            Same 3% tax. Different pocket.
+          </p>
+          <p className="reveal display py-6 text-[clamp(1.6rem,3.6vw,3rem)] text-balance">
+            Dev wallet has no pocket.
+          </p>
+          <p className="reveal display py-6 text-[clamp(1.6rem,3.6vw,3rem)] text-balance">
+            We didn’t remove the tax.{" "}
+            <span className="text-lime">We rerouted it.</span>
+          </p>
         </div>
       </div>
     </section>

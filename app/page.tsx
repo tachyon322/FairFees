@@ -4,9 +4,9 @@ import { FinePrint } from "@/components/fine-print";
 import { Footer } from "@/components/footer";
 import { Hero } from "@/components/hero";
 import { Loop } from "@/components/loop";
-import { Marquee } from "@/components/marquee";
 import { Nav } from "@/components/nav";
 import { Rules } from "@/components/rules";
+import { SpecStrip } from "@/components/spec-strip";
 import { Versus } from "@/components/versus";
 
 export default function Home() {
@@ -15,7 +15,7 @@ export default function Home() {
       <Nav />
       <main className="flex-1">
         <Hero />
-        <Marquee />
+        <SpecStrip />
         <Loop />
         <Calculator />
         <Versus />

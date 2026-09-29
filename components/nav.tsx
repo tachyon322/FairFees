@@ -14,11 +14,11 @@ export function Logo({ className = "" }: { className?: string }) {
       aria-label={`${site.name} home`}
       className={`flex items-center gap-2.5 ${className}`}
     >
-      <span className="display grid size-8 place-items-center rounded-[10px] bg-lime pb-0.5 text-[22px] text-ink [font-stretch:100%]">
+      <span className="grid size-6 place-items-center rounded-[5px] bg-lime pb-px font-mono text-[13px] leading-none font-bold text-ink">
         %
       </span>
-      <span className="display text-[22px] uppercase [font-stretch:85%]">
-        Fair Fees
+      <span className="text-[15px] font-semibold tracking-[-0.02em]">
+        {site.name}
       </span>
     </a>
   );
@@ -26,27 +26,27 @@ export function Logo({ className = "" }: { className?: string }) {
 
 export function Nav() {
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-ink/70 backdrop-blur-xl">
-      <div className="wrap flex h-16 items-center justify-between gap-4">
+    <header className="sticky top-0 z-50 border-b border-line bg-ink/85 backdrop-blur-md">
+      <div className="wrap flex h-14 items-center justify-between gap-4">
         <Logo />
 
-        <nav aria-label="Primary" className="hidden items-center gap-8 md:flex">
+        <nav aria-label="Primary" className="hidden items-center gap-9 md:flex">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="text-sm text-muted transition-colors hover:text-foreground"
+              className="text-[13px] text-muted transition-colors hover:text-foreground"
             >
               {l.label}
             </a>
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-5">
           <NavClock />
           <a
             href={buyHref}
-            className="rounded-full bg-lime px-4 py-2 text-sm font-semibold text-ink transition-transform hover:scale-[1.04] active:scale-95"
+            className="rounded-md bg-lime px-4 py-2 text-[13px] font-semibold text-ink transition-colors hover:bg-foreground"
           >
             Buy {site.ticker}
           </a>

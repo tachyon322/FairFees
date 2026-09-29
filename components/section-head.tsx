@@ -1,31 +1,31 @@
 import type { ReactNode } from "react";
 
 type SectionHeadProps = {
-  eyebrow: string;
+  index: string;
+  label: string;
   title: ReactNode;
   lede?: ReactNode;
-  className?: string;
 };
 
-export function SectionHead({
-  eyebrow,
-  title,
-  lede,
-  className = "",
-}: SectionHeadProps) {
+/** Mono index on the left, headline on the right. One grid, every section. */
+export function SectionHead({ index, label, title, lede }: SectionHeadProps) {
   return (
-    <div className={`reveal max-w-3xl ${className}`}>
-      <p className="font-mono text-[11px] tracking-[0.22em] text-lime uppercase">
-        {eyebrow}
+    <div className="reveal grid gap-6 lg:grid-cols-[13rem_1fr] lg:gap-12">
+      <p className="font-mono text-[11px] tracking-[0.18em] text-muted uppercase">
+        <span className="text-foreground">{index}</span>
+        <span className="mx-2 text-line-strong">/</span>
+        {label}
       </p>
-      <h2 className="display mt-5 text-[clamp(2.75rem,7.2vw,5.75rem)] text-balance">
-        {title}
-      </h2>
-      {lede ? (
-        <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
-          {lede}
-        </p>
-      ) : null}
+      <div>
+        <h2 className="display max-w-3xl text-[clamp(2.1rem,4.6vw,3.75rem)] text-balance">
+          {title}
+        </h2>
+        {lede ? (
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-muted">
+            {lede}
+          </p>
+        ) : null}
+      </div>
     </div>
   );
 }

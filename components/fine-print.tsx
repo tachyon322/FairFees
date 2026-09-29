@@ -1,17 +1,17 @@
 export function FinePrint() {
   return (
-    <section className="relative py-12 sm:py-16">
-      <div className="wrap">
-        <div className="reveal rounded-[28px] border border-dashed border-white/20 p-7 sm:p-12">
-          <p className="font-mono text-[11px] tracking-[0.22em] text-muted uppercase">
-            Fine print
-          </p>
-          <p className="display mt-6 max-w-4xl text-[clamp(1.9rem,4.4vw,3.6rem)] [font-stretch:90%] [letter-spacing:-0.018em] [line-height:1] text-balance">
+    <section className="border-b border-line py-20 sm:py-24">
+      <div className="wrap reveal grid gap-6 lg:grid-cols-[13rem_1fr] lg:gap-12">
+        <p className="font-mono text-[11px] tracking-[0.18em] text-muted uppercase">
+          Fine print
+        </p>
+        <div>
+          <p className="display max-w-3xl text-[clamp(1.5rem,2.8vw,2.3rem)] leading-[1.15] text-balance text-foreground/70">
             A contract that pays holders does not stop anyone from selling. It
             does not make the token safe. It only answers one question:{" "}
-            <span className="text-lime">where does the 3% go?</span>
+            <span className="text-foreground">where does the 3% go?</span>
           </p>
-          <p className="mt-8 max-w-2xl text-sm leading-relaxed text-muted">
+          <p className="mt-8 max-w-2xl text-[13px] leading-relaxed text-muted">
             Not financial advice. Tokens are volatile and you can lose
             everything you put in. Payouts depend entirely on trading volume:
             some minutes will be small, and some will be zero.
