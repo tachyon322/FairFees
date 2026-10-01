@@ -48,7 +48,7 @@ export function Hero() {
           <div className="mt-9 flex flex-wrap items-center gap-3">
             <SliceButton crack href={LINKS.buy}>Take your cut →</SliceButton>
             <a
-              href="#loop"
+              href="/whitepaper#design"
               className="inline-flex items-center gap-2 rounded-xl border border-line-2 px-6 py-3.5 text-[15px] text-fg transition-colors hover:bg-white/5"
             >
               How the split works

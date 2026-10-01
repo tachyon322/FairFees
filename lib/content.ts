@@ -32,11 +32,10 @@ export const NAV: NavItem[] = [
     label: "Home",
     href: "/",
     sections: [
-      { n: "01", label: "The loop", hint: "pons → splitter → holders", href: "/#loop" },
+      { n: "01", label: "Your cut", hint: "Share × volume calculator", href: "/#cut" },
       { n: "02", label: "Versus", hint: "Same 3%. Different pocket.", href: "/#versus" },
-      { n: "03", label: "Your cut", hint: "Share × volume calculator", href: "/#cut" },
-      { n: "04", label: "Payday", hint: "Receipts, every 60 seconds", href: "/#payday" },
-      { n: "05", label: "How to buy", hint: "Three steps and the CA", href: "/#buy" },
+      { n: "03", label: "Payday", hint: "Receipts, every 60 seconds", href: "/#payday" },
+      { n: "04", label: "How to buy", hint: "Three steps and the CA", href: "/#buy" },
     ],
   },
   { label: "Rules", href: "/rules" },
@@ -50,24 +49,6 @@ export const HERO_LINES = [
   "1% of supply. 1% of the fees. Every minute.",
   "The fee doesn't sit. It pays.",
   "Sixty seconds. Then it drops again.",
-];
-
-export const LOOP = [
-  {
-    n: "01",
-    title: "pons pays the creator.",
-    body: "Every trade on pons v2 carries a 3% creator tax. Set at launch. Fixed forever. Paid to the creator fee recipient.",
-  },
-  {
-    n: "02",
-    title: "the creator is a contract.",
-    body: "The creatorFeeRecipient is not a person. It is a splitter contract, from block 0. No founder pocket. No later redirect.",
-  },
-  {
-    n: "03",
-    title: "the contract pays holders. every 60 seconds.",
-    body: "It claims the accrued fees and splits them pro rata. Hold 1% of supply, take 1% of the fees. In ETH.",
-  },
 ];
 
 export const VERSUS = [

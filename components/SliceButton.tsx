@@ -37,7 +37,7 @@ export function SliceButton({
   className?: string;
 }) {
   const face = {
-    sm: "gap-1.5 rounded-lg px-3.5 py-1.5 text-sm",
+    sm: "h-9 gap-1.5 rounded-lg px-4 text-[13.5px]",
     md: "gap-2 rounded-xl px-6 py-3.5 text-[15px]",
     lg: "gap-2 rounded-xl px-7 py-4 text-base",
   }[size];

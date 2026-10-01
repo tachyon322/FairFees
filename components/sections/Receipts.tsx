@@ -13,7 +13,7 @@ export function Receipts() {
     <section id="payday" className="relative overflow-hidden py-28 sm:py-36">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
-          <SectionLabel n="04">Payday</SectionLabel>
+          <SectionLabel n="03">Payday</SectionLabel>
         </Reveal>
         <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
           <Reveal delay={80}>
@@ -46,7 +46,7 @@ export function Receipts() {
       {/* receipt rail */}
       <div className="relative mt-16">
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 pb-5 font-mono text-[11px] uppercase tracking-[0.16em] text-muted sm:px-6">
-          {claiming ? <Pulse size={14} color="var(--acc)" /> : <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-acc" />}
+          {claiming && <Pulse size={14} color="var(--acc)" />}
           <span>{claiming ? "printing…" : `next receipt in 00:${String(sim.secondsLeft).padStart(2, "0")}`}</span>
           <span className="ml-auto text-dim normal-case tracking-normal">simulated until launch</span>
         </div>

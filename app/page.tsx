@@ -1,6 +1,5 @@
 import { Preloader } from "@/components/Preloader";
 import { Hero } from "@/components/sections/Hero";
-import { Loop } from "@/components/sections/Loop";
 import { Versus } from "@/components/sections/Versus";
 import { Calculator } from "@/components/sections/Calculator";
 import { Receipts } from "@/components/sections/Receipts";
@@ -13,9 +12,8 @@ export default function Home() {
       <Preloader />
       <main>
         <Hero />
-        <Loop />
-        <Versus />
         <Calculator />
+        <Versus />
         <Receipts />
         <HowToBuy />
         <Outro />

@@ -56,7 +56,7 @@ export function HowToBuy() {
     <section id="buy" className="relative border-t border-line bg-bg-2 py-28 sm:py-36">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
-          <SectionLabel n="05">How to take your cut</SectionLabel>
+          <SectionLabel n="04">How to take your cut</SectionLabel>
         </Reveal>
         <Reveal delay={80}>
           <h2 className="text-[clamp(40px,6.5vw,88px)] leading-[0.9] font-semibold tracking-[-0.05em]">

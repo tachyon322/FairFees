@@ -24,7 +24,6 @@ export function FeeMachine() {
         {/* header */}
         <div className="flex items-center justify-between border-b border-line px-5 py-3 font-mono text-[11px] uppercase tracking-[0.16em]">
           <span className="flex items-center gap-2 text-fg">
-            <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-acc" />
             Fee machine
           </span>
           <span className="rounded-md border border-line-2 px-2 py-0.5 text-[10px] text-muted" title="Token not deployed yet. Numbers are simulated.">

@@ -96,12 +96,12 @@ function Dropdown({
 
   return (
     <div
-      className="absolute top-full left-0 pt-3"
+      className="absolute top-full left-1/2 pt-[18px]"
       style={{
         pointerEvents: open ? "auto" : "none",
         opacity: open ? 1 : 0,
-        transform: open ? "none" : "translateY(-6px) scale(0.98)",
-        transformOrigin: "top left",
+        transform: open ? "translateX(-50%)" : "translateX(-50%) translateY(-6px) scale(0.98)",
+        transformOrigin: "top center",
         transition: `opacity .25s, transform .4s ${EASE}`,
       }}
       onKeyDown={onKeyDown}
@@ -109,12 +109,12 @@ function Dropdown({
       <div
         id="nav-home-menu"
         role="menu"
-        className="relative w-[300px] rounded-2xl border border-line-2 bg-[#0d0e0b] p-1.5 shadow-[0_20px_60px_-10px_rgba(0,0,0,0.9)] backdrop-blur-xl"
+        className="relative w-[320px] rounded-2xl border border-line-2 bg-bg-2 p-1.5 shadow-[0_24px_64px_-16px_rgba(0,0,0,0.95)]"
         onMouseLeave={() => setHover(null)}
       >
         <span
           aria-hidden
-          className="pointer-events-none absolute top-0 right-1.5 left-1.5 rounded-xl bg-white/[0.06]"
+          className="pointer-events-none absolute top-0 right-1.5 left-1.5 rounded-xl bg-white/[0.05]"
           style={style}
         />
         {sections.map((s, i) => {
@@ -132,9 +132,15 @@ function Dropdown({
               onMouseEnter={() => setHover(i)}
               onFocus={() => setHover(i)}
               onBlur={() => setHover(null)}
-              className="relative flex items-center gap-3 rounded-xl px-3 py-2.5 outline-none"
+              className="relative flex items-center gap-3 rounded-xl px-2.5 py-2 outline-none"
             >
-              <span className={`font-mono text-[11px] ${on ? "text-acc" : "text-dim"}`}>{s.n}</span>
+              <span
+                className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg border font-mono text-[10px] transition-colors ${
+                  on ? "border-acc/40 bg-acc/10 text-acc" : "border-line text-dim"
+                }`}
+              >
+                {s.n}
+              </span>
               <span className="min-w-0 flex-1">
                 <span className={`block text-sm transition-colors ${on || hover === i ? "text-fg" : "text-muted"}`}>
                   {s.label}
@@ -204,19 +210,23 @@ export function NavTabs() {
   };
 
   const tabClass = (i: number) =>
-    `relative flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors duration-300 outline-none ${
+    `relative flex h-8 items-center gap-1 rounded-lg px-3.5 text-[13.5px] transition-colors duration-300 outline-none focus-visible:ring-1 focus-visible:ring-acc/60 ${
       i === target || i === activeIdx ? "text-fg" : "text-muted"
     }`;
 
   return (
-    <ul ref={wrap} className="relative hidden items-center gap-1 lg:flex" onMouseLeave={() => setHover(null)}>
+    <ul
+      ref={wrap}
+      className="relative hidden items-center gap-2 lg:flex"
+      onMouseLeave={() => setHover(null)}
+    >
       <span
         aria-hidden
-        className="pointer-events-none absolute top-0 left-0 h-full rounded-lg border border-line-2 bg-white/[0.06]"
+        className="pointer-events-none absolute top-0 left-0 h-8 rounded-lg bg-white/[0.07] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
         style={style}
       >
         <span
-          className="absolute -bottom-px left-1/2 h-px w-4 -translate-x-1/2 bg-acc transition-opacity duration-300"
+          className="absolute -bottom-2 left-1/2 h-[3px] w-[3px] -translate-x-1/2 rounded-full bg-acc transition-opacity duration-300"
           style={{ opacity: target !== null && target === activeIdx ? 1 : 0 }}
         />
       </span>
@@ -251,7 +261,7 @@ export function NavTabs() {
                 height="10"
                 viewBox="0 0 10 10"
                 aria-hidden
-                className="transition-transform duration-300"
+                className="-mr-1 opacity-60 transition-transform duration-300"
                 style={{ transform: menu === i ? "rotate(180deg)" : "none" }}
               >
                 <path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
