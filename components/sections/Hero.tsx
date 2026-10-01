@@ -22,11 +22,11 @@ export function Hero() {
   }, []);
 
   return (
-    <section id="top" className="relative overflow-hidden pt-32 pb-20 sm:pt-40">
+    <section id="top" className="relative overflow-hidden pt-36 pb-20 sm:pt-48 lg:pt-56 lg:pb-24">
       <div className="bg-grid pointer-events-none absolute inset-0" />
       <div className="pointer-events-none absolute top-[-20%] left-1/2 h-[700px] w-[1100px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(200,255,77,0.08),transparent)]" />
 
-      <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-[1.1fr_1fr]">
+      <div className="relative mx-auto grid max-w-6xl items-start gap-14 px-4 sm:px-6 lg:grid-cols-[1.1fr_1fr]">
         <div>
           <h1 className="text-[clamp(64px,11vw,148px)] leading-[0.86] font-semibold tracking-[-0.055em]">
             <span className="block">The 3%</span>
