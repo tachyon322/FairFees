@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { TextMorph } from "torph/react";
 import { Logo } from "./Logo";
 import { NavTabs, useActiveNav } from "./NavTabs";
-import { LINKS, NAV } from "@/lib/content";
+import { LINKS, NAV, TOKEN, explorerAddress, shortHash } from "@/lib/content";
 import { useSim, type SimState } from "@/lib/sim";
 import { boot } from "@/lib/boot";
 import { SliceButton } from "./SliceButton";
@@ -60,9 +60,18 @@ export function Nav() {
               {splitLabel(sim)}
             </TextMorph>
           </div>
-          <SliceButton href={LINKS.buy} size="sm">
-            Buy $FEES<span className="hidden sm:inline">→</span>
-          </SliceButton>
+          {TOKEN.contractAddress ? (
+            <SliceButton href={explorerAddress(TOKEN.contractAddress)} size="sm">
+              <span className="font-mono text-[12.5px]">
+                <span className="opacity-60">CA</span> {shortHash(TOKEN.contractAddress)}
+              </span>
+              <span className="hidden sm:inline">↗</span>
+            </SliceButton>
+          ) : (
+            <SliceButton href={LINKS.buy} size="sm">
+              Buy $FEES<span className="hidden sm:inline">→</span>
+            </SliceButton>
+          )}
           <button
             className="ml-1.5 grid h-9 w-9 place-items-center rounded-lg text-fg transition-colors hover:bg-white/[0.06] lg:hidden"
             onClick={() => setOpen((o) => !o)}

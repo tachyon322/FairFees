@@ -1,0 +1,192 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=block" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0b09; --fg: #eceee4; --muted: #8a8d80;
+    --acc: #c8ff4d; --paper: #f1eee4; --ink: #16170f; --ink-muted: #6d6b60;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { overflow: hidden; }
+  body { font-family: "Geist", sans-serif; -webkit-font-smoothing: antialiased; }
+
+  .card { position: relative; overflow: hidden; background: var(--bg); color: var(--fg); }
+  .card > * { position: absolute; }
+  .layer { inset: 0; }
+  .grain {
+    inset: 0; opacity: 0.07; mix-blend-mode: overlay; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  .brand { display: flex; align-items: center; gap: 14px; font-size: 30px; font-weight: 600; letter-spacing: -0.03em; }
+  .brand span { color: var(--muted); }
+
+  .h { font-weight: 600; letter-spacing: -0.055em; line-height: 0.86; white-space: nowrap; }
+  .h span { display: block; }
+  .h em { font-family: "Instrument Serif", serif; font-weight: 400; font-style: italic; letter-spacing: -0.02em; color: var(--acc); }
+
+  /* ---------- paper ---------- */
+  .paper { background: var(--paper); color: var(--ink); }
+  .paper .brand span { color: var(--ink-muted); }
+  .paper .h em { color: var(--ink); position: relative; z-index: 0; }
+  .paper .h em::after {
+    content: ""; position: absolute; z-index: -1; left: -0.02em; right: 0.02em; bottom: 0.1em; height: 0.3em;
+    background: var(--acc); transform: skewX(-12deg);
+  }
+  .paper .grain { mix-blend-mode: multiply; opacity: 0.12; }
+
+  /* ---------- lime ---------- */
+  .lime { background: var(--acc); color: var(--ink); }
+  .lime .brand span { color: rgba(22,23,15,0.55); }
+  .lime .h em { color: var(--ink); }
+  .lime .grain { mix-blend-mode: multiply; opacity: 0.14; }
+
+  /* ---------- type ---------- */
+  .type .giant { font-weight: 600; letter-spacing: -0.07em; line-height: 0.8; color: var(--acc); white-space: nowrap; }
+</style>
+</head>
+<body>
+<div id="card" class="card"></div>
+
+<script>
+  const NS = "http://www.w3.org/2000/svg";
+  const C = { bg: "#0a0b09", fg: "#eceee4", acc: "#c8ff4d", paper: "#f1eee4", ink: "#16170f" };
+  const HALF = 24;
+  const polar = (cx, cy, r, deg) => { const a = deg * Math.PI / 180; return [cx + r * Math.sin(a), cy - r * Math.cos(a)]; };
+  const f = p => `${p[0].toFixed(2)} ${p[1].toFixed(2)}`;
+  const el = (parent, tag, attrs = {}) => {
+    const n = document.createElementNS(NS, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    parent.appendChild(n);
+    return n;
+  };
+  const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+
+  // The mark: coin with one slice pulled out
+  function mark(svg, { cx, cy, r, lift, hole, body, slice, holeFill, glow = 0 }) {
+    const a = polar(cx, cy, r, HALF), b = polar(cx, cy, r, 360 - HALF);
+    const s1 = polar(cx, cy, r, -HALF), s2 = polar(cx, cy, r, HALF);
+    const sliceD = `M ${cx} ${cy} L ${f(s1)} A ${r} ${r} 0 0 1 ${f(s2)} Z`;
+    if (glow) {
+      const id = "g" + Math.random().toString(36).slice(2);
+      const flt = el(el(svg, "defs"), "filter", { id, x: "-50%", y: "-50%", width: "200%", height: "200%" });
+      el(flt, "feGaussianBlur", { stdDeviation: r * 0.1 });
+      el(svg, "path", { d: sliceD, fill: slice, opacity: glow, filter: `url(#${id})`, transform: `translate(0 ${-lift})` });
+    }
+    el(svg, "path", { d: `M ${cx} ${cy} L ${f(a)} A ${r} ${r} 0 1 1 ${f(b)} Z`, fill: body });
+    el(svg, "circle", { cx, cy, r: hole, fill: holeFill });
+    el(svg, "path", { d: sliceD, fill: slice, transform: `translate(0 ${-lift})` });
+  }
+
+  const card = document.getElementById("card");
+  function size(w, h) {
+    document.documentElement.style.width = document.body.style.width = card.style.width = w + "px";
+    document.documentElement.style.height = document.body.style.height = card.style.height = h + "px";
+  }
+  function svgLayer(w, h) {
+    const s = el(card, "svg", { class: "layer", width: w, height: h, viewBox: `0 0 ${w} ${h}` });
+    return s;
+  }
+  function brand(style, colors) {
+    const d = document.createElement("div");
+    d.className = "brand"; d.style.cssText = style;
+    d.innerHTML = `<svg width="38" height="38" viewBox="0 0 32 32"></svg><b style="font-weight:600">fair<span>fees</span></b>`;
+    card.appendChild(d);
+    mark(d.querySelector("svg"), { cx: 16, cy: 16, r: 12.5, lift: 3.2, hole: 1.7, ...colors });
+  }
+  function html(s) { card.insertAdjacentHTML("beforeend", s); }
+  function glowDiv(x, y, w, h, color) {
+    html(`<div style="left:${x - w / 2}px;top:${y - h / 2}px;width:${w}px;height:${h}px;background:radial-gradient(closest-side,${color},transparent)"></div>`);
+  }
+  function rays(w, h, cx, cy, r, { fade = null } = {}) {
+    const cv = document.createElement("canvas");
+    cv.className = "layer"; card.appendChild(cv);
+    const dpr = window.devicePixelRatio || 1;
+    cv.width = w * dpr; cv.height = h * dpr; cv.style.width = w + "px"; cv.style.height = h + "px";
+    const g = cv.getContext("2d"); g.scale(dpr, dpr);
+    const W = 12, far = 2400;
+    for (let i = 0; i < 360 / W; i++) {
+      const a0 = -HALF + i * W, a1 = a0 + W;
+      const inBeam = a0 >= -HALF && a1 <= HALF;
+      if (!inBeam && i % 2) continue;
+      const grad = g.createRadialGradient(cx, cy, r, cx, cy, r + 900);
+      grad.addColorStop(0, inBeam ? "rgba(200,255,77,0.22)" : "rgba(236,238,228,0.07)");
+      grad.addColorStop(1, inBeam ? "rgba(200,255,77,0)" : "rgba(236,238,228,0)");
+      g.fillStyle = grad;
+      g.beginPath(); g.moveTo(cx, cy); g.lineTo(...polar(cx, cy, far, a0)); g.lineTo(...polar(cx, cy, far, a1)); g.closePath(); g.fill();
+    }
+    for (let rr = r + 70; rr < 2000; rr += 70) {
+      g.strokeStyle = `rgba(236,238,228,${0.07 * (1 - smooth(r, r + 800, rr))})`;
+      g.beginPath(); g.arc(cx, cy, rr, 0, Math.PI * 2); g.stroke();
+    }
+    if (fade) fade(g);
+  }
+
+  const v = new URLSearchParams(location.search).get("v") || "paper";
+  const darkMark = { body: C.fg, slice: C.acc, holeFill: C.bg };
+
+  if (v === "paper") {
+    // Light editorial: mark on top, one-line slogan with a highlighter stroke
+    size(1600, 900); card.classList.add("paper");
+    const s = svgLayer(1600, 900);
+    mark(s, { cx: 800, cy: 320, r: 180, lift: 52, hole: 15, body: C.ink, slice: C.acc, holeFill: C.paper });
+    html(`<h1 class="h" style="left:0;right:0;top:575px;text-align:center;font-size:150px">The 3% is <em>yours.</em></h1>`);
+    brand("left:72px;top:68px", { body: C.ink, slice: C.acc, holeFill: C.paper });
+  }
+
+  if (v === "lime") {
+    // Poster: full lime, ink type, ink coin with a paper slice
+    size(1600, 900); card.classList.add("lime");
+    const s = svgLayer(1600, 900);
+    mark(s, { cx: 1180, cy: 500, r: 280, lift: 78, hole: 24, body: C.ink, slice: C.paper, holeFill: C.acc });
+    html(`<h1 class="h" style="left:90px;top:310px;font-size:176px"><span>The 3%</span><span>is <em>yours.</em></span></h1>`);
+    brand("left:96px;top:84px", { body: C.ink, slice: C.paper, holeFill: C.acc });
+  }
+
+  if (v === "sunrise") {
+    // A giant coin rising from the bottom edge, slogan above it
+    size(1600, 900);
+    const cx = 800, cy = 1130, r = 640, lift = 120;
+    rays(1600, 900, cx, cy, r);
+    glowDiv(800, 430, 1300, 700, "rgba(200,255,77,0.10)");
+    const s = svgLayer(1600, 900);
+    mark(s, { cx, cy, r, lift, hole: 40, ...darkMark, glow: 0.45 });
+    html(`<h1 class="h" style="left:0;right:0;top:150px;text-align:center;font-size:150px">The 3% is <em>yours.</em></h1>`);
+    brand("left:50%;transform:translateX(-50%);top:64px", darkMark);
+  }
+
+  if (v === "type") {
+    // Typographic: the number is the hero
+    size(1600, 900); card.classList.add("type");
+    glowDiv(520, 560, 1300, 900, "rgba(200,255,77,0.10)");
+    const s = svgLayer(1600, 900);
+    mark(s, { cx: 1310, cy: 370, r: 190, lift: 54, hole: 16, ...darkMark, glow: 0.4 });
+    html(`<div class="h" style="left:96px;top:190px;font-size:120px">The</div>`);
+    html(`<div class="giant" style="left:70px;top:330px;font-size:560px">3%</div>`);
+    html(`<div class="h" style="left:880px;top:664px;font-size:120px">is <em>yours.</em></div>`);
+    brand("left:96px;top:84px", darkMark);
+  }
+
+  if (v === "square") {
+    // 1:1 — centred mark with rays, slogan underneath
+    size(1200, 1200);
+    const cx = 600, cy = 560, r = 270, lift = 74;
+    rays(1200, 1200, cx, cy, r, {
+      fade: g => {
+        const lg = g.createLinearGradient(0, 860, 0, 1200);
+        lg.addColorStop(0, "rgba(10,11,9,0)"); lg.addColorStop(0.4, "rgba(10,11,9,0.9)");
+        g.fillStyle = lg; g.fillRect(0, 860, 1200, 340);
+      },
+    });
+    const s = svgLayer(1200, 1200);
+    mark(s, { cx, cy, r, lift, hole: 23, ...darkMark, glow: 0.4 });
+    html(`<h1 class="h" style="left:0;right:0;top:950px;text-align:center;font-size:124px">The 3% is <em>yours.</em></h1>`);
+    brand("left:50%;transform:translateX(-50%);top:64px", darkMark);
+  }
+
+  html(`<div class="grain"></div>`);
+</script>
+</body>
+</html>

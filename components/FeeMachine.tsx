@@ -3,6 +3,8 @@
 import { TextMorph } from "torph/react";
 import { Orbit } from "loading-dev";
 import { fmtEth, useSim } from "@/lib/sim";
+import { fmtAmount, useLiveTrades } from "@/lib/trades";
+import { explorerTx } from "@/lib/content";
 
 const r3 = (n: number) => Math.round(n * 1000) / 1000;
 const TICKS = Array.from({ length: 60 }, (_, i) => i);
@@ -14,6 +16,7 @@ export function FeeMachine() {
   const elapsed = sim.phase === "claiming" ? 60 : 60 - sim.secondsLeft;
   const last = sim.splits[0];
   const claiming = sim.phase === "claiming";
+  const live = useLiveTrades();
 
   return (
     <div className="relative w-full max-w-[520px]">
@@ -26,9 +29,15 @@ export function FeeMachine() {
           <span className="flex items-center gap-2 text-fg">
             Fee machine
           </span>
-          <span className="rounded-md border border-line-2 px-2 py-0.5 text-[10px] text-muted" title="Token not deployed yet. Numbers are simulated.">
-            Simulation · pre-launch
-          </span>
+          {live ? (
+            <span className="rounded-md border border-line-2 px-2 py-0.5 text-[10px] text-muted" title="Trades are live from the chain. The timer and pot are simulated.">
+              Live trades · sim timer
+            </span>
+          ) : (
+            <span className="rounded-md border border-line-2 px-2 py-0.5 text-[10px] text-muted" title="Token not deployed yet. Numbers are simulated.">
+              Simulation · pre-launch
+            </span>
+          )}
         </div>
 
         <div className="grid gap-0 sm:grid-cols-[1fr_190px]">
@@ -100,23 +109,44 @@ export function FeeMachine() {
           <div className="border-t border-line p-4 sm:border-t-0 sm:border-l">
             <div className="mb-3 flex justify-between font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
               <span>trades</span>
-              <span>3% tax</span>
+              <span>{live ? "amount" : "3% tax"}</span>
             </div>
-            <ul className="flex h-[180px] flex-col gap-1.5 overflow-hidden sm:h-[236px]">
-              {sim.trades.length === 0 && (
-                <li className="font-mono text-xs text-dim">{claiming ? "pot → splitter" : "waiting for volume…"}</li>
-              )}
-              {sim.trades.map((t) => (
-                <li
-                  key={t.id}
-                  className="slide-in flex items-center justify-between rounded-md bg-white/[0.03] px-2 py-1.5 font-mono text-[11px]"
-                >
-                  <span className={t.side === "buy" ? "text-acc" : "text-red"}>{t.side}</span>
-                  <span className="text-muted">{t.eth.toFixed(3)}</span>
-                  <span className="text-fg">+{t.tax.toFixed(4)}</span>
-                </li>
-              ))}
-            </ul>
+            {live ? (
+              <ul className="flex h-[180px] flex-col gap-1.5 overflow-hidden sm:h-[236px]">
+                {live.length === 0 && <li className="font-mono text-xs text-dim">waiting for volume…</li>}
+                {live.map((t) => (
+                  <li key={t.id} className="slide-in">
+                    <a
+                      href={explorerTx(t.hash)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={t.hash}
+                      className="flex items-center justify-between rounded-md bg-white/[0.03] px-2 py-1.5 font-mono text-[11px] transition-colors hover:bg-white/[0.07]"
+                    >
+                      <span className={t.side === "buy" ? "text-acc" : "text-red"}>{t.side}</span>
+                      <span className="text-fg tabular-nums">{fmtAmount(t.amount)}</span>
+                      <span className="text-dim">↗</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <ul className="flex h-[180px] flex-col gap-1.5 overflow-hidden sm:h-[236px]">
+                {sim.trades.length === 0 && (
+                  <li className="font-mono text-xs text-dim">{claiming ? "pot → splitter" : "waiting for volume…"}</li>
+                )}
+                {sim.trades.map((t) => (
+                  <li
+                    key={t.id}
+                    className="slide-in flex items-center justify-between rounded-md bg-white/[0.03] px-2 py-1.5 font-mono text-[11px]"
+                  >
+                    <span className={t.side === "buy" ? "text-acc" : "text-red"}>{t.side}</span>
+                    <span className="text-muted">{t.eth.toFixed(3)}</span>
+                    <span className="text-fg">+{t.tax.toFixed(4)}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
 

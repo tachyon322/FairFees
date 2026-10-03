@@ -1,0 +1,186 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0b09; --fg: #eceee4; --muted: #8a8d80; --dim: #5b5e53;
+    --acc: #c8ff4d; --line: rgba(236,240,226,0.07); --line-2: rgba(236,240,226,0.14);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1600px; height: 900px; background: var(--bg); overflow: hidden; }
+  body { font-family: "Geist", sans-serif; color: var(--fg); -webkit-font-smoothing: antialiased; }
+
+  .card { position: relative; width: 1600px; height: 900px; overflow: hidden; }
+
+  .glow {
+    position: absolute; left: 1150px; top: 170px; width: 1100px; height: 900px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(closest-side, rgba(200,255,77,0.13), transparent);
+  }
+  .grain {
+    position: absolute; inset: 0; opacity: 0.07; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  #bg, #art { position: absolute; inset: 0; }
+
+  .brand {
+    position: absolute; left: 96px; top: 84px;
+    display: flex; align-items: center; gap: 14px;
+    font-size: 30px; font-weight: 600; letter-spacing: -0.03em;
+  }
+  .brand span { color: var(--muted); }
+
+
+  h1 {
+    position: absolute; left: 90px; top: 310px;
+    font-size: 176px; line-height: 0.86; font-weight: 600; letter-spacing: -0.055em;
+  }
+  h1 span { display: block; }
+  h1 em {
+    font-family: "Instrument Serif", serif; font-weight: 400; font-style: italic;
+    letter-spacing: -0.02em; color: var(--acc);
+  }
+
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="glow"></div>
+  <canvas id="bg"></canvas>
+  <svg id="art" width="1600" height="900" viewBox="0 0 1600 900"></svg>
+
+  <div class="brand">
+    <svg id="mini" width="38" height="38" viewBox="0 0 32 32"></svg>
+    <b style="font-weight:600">fair<span>fees</span></b>
+  </div>
+
+  <h1>
+    <span>The 3%</span>
+    <span>is <em>yours.</em></span>
+  </h1>
+
+  <div class="grain"></div>
+</div>
+
+<script>
+  const NS = "http://www.w3.org/2000/svg";
+  const polar = (cx, cy, r, deg) => {
+    const a = deg * Math.PI / 180;
+    return [cx + r * Math.sin(a), cy - r * Math.cos(a)];
+  };
+  const f = p => `${p[0].toFixed(2)} ${p[1].toFixed(2)}`;
+  const el = (parent, tag, attrs) => {
+    const n = document.createElementNS(NS, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    parent.appendChild(n);
+    return n;
+  };
+  const HALF = 24;
+
+  function mark(svg, C, R, lift, hole) {
+    const a = polar(C, C, R, HALF), b = polar(C, C, R, 360 - HALF);
+    el(svg, "path", { d: `M ${C} ${C} L ${f(a)} A ${R} ${R} 0 1 1 ${f(b)} Z`, fill: "#eceee4" });
+    el(svg, "circle", { cx: C, cy: C, r: hole, fill: "#0a0b09" });
+    const s1 = polar(C, C, R, -HALF), s2 = polar(C, C, R, HALF);
+    const g = el(svg, "g", { transform: `translate(0 ${-lift})` });
+    el(g, "path", { d: `M ${C} ${C} L ${f(s1)} A ${R} ${R} 0 0 1 ${f(s2)} Z`, fill: "#c8ff4d" });
+    return g;
+  }
+
+  // Mini logo in the brand lockup
+  mark(document.getElementById("mini"), 16, 12.5, 3.2, 1.7);
+
+  // Hero mark: coin / clock face with the slice pulled out
+  const art = document.getElementById("art");
+  const CX = 1170, CY = 500, R = 280, LIFT = 78;
+
+  // Soft shadow under the coin
+  const defs = el(art, "defs", {});
+  const blur = el(defs, "filter", { id: "glow", x: "-50%", y: "-50%", width: "200%", height: "200%" });
+  el(blur, "feGaussianBlur", { stdDeviation: 28 });
+
+  // Glow behind the slice
+  const s1 = polar(CX, CY, R, -HALF), s2 = polar(CX, CY, R, HALF);
+  el(art, "path", {
+    d: `M ${CX} ${CY} L ${f(s1)} A ${R} ${R} 0 0 1 ${f(s2)} Z`,
+    fill: "#c8ff4d", opacity: 0.35, filter: "url(#glow)", transform: `translate(0 ${-LIFT})`,
+  });
+
+  // The coin
+  {
+    const a = polar(CX, CY, R, HALF), b = polar(CX, CY, R, 360 - HALF);
+    el(art, "path", { d: `M ${CX} ${CY} L ${f(a)} A ${R} ${R} 0 1 1 ${f(b)} Z`, fill: "#eceee4" });
+    el(art, "circle", { cx: CX, cy: CY, r: 24, fill: "#0a0b09" });
+    el(art, "path", {
+      d: `M ${CX} ${CY} L ${f(s1)} A ${R} ${R} 0 0 1 ${f(s2)} Z`,
+      fill: "#c8ff4d", transform: `translate(0 ${-LIFT})`,
+    });
+  }
+
+  // Background — ?bg=dots (halftone) or ?bg=rays (sunburst)
+  {
+    const mode = new URLSearchParams(location.search).get("bg") || "dots";
+    const cv = document.getElementById("bg");
+    const dpr = window.devicePixelRatio || 1;
+    cv.width = 1600 * dpr; cv.height = 900 * dpr;
+    cv.style.width = "1600px"; cv.style.height = "900px";
+    const g = cv.getContext("2d");
+    g.scale(dpr, dpr);
+    const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+    // angle from 12 o'clock, in degrees, -180..180
+    const ang = (x, y) => Math.atan2(x - CX, CY - y) * 180 / Math.PI;
+
+    if (mode === "dots") {
+      const step = 18;
+      for (let y = step / 2; y < 900; y += step) {
+        for (let x = step / 2; x < 1600; x += step) {
+          const d = Math.hypot(x - CX, y - CY);
+          if (d < R - 4) continue;
+          const a = Math.abs(ang(x, y));
+          const beam = smooth(HALF + 4, HALF - 4, a);           // inside the slice's direction
+          const fall = Math.pow(1 - smooth(R, R + 760, d), 1.6);  // shrink away from the coin
+          const keepLeft = smooth(80, 760, x);                     // keep the headline clean
+          const t = Math.max(fall * keepLeft, beam * (1 - smooth(R, R + 900, d)));
+          const r = 7.2 * t;
+          if (r < 0.5) continue;
+          g.fillStyle = beam > 0.5
+            ? `rgba(200,255,77,${0.25 + 0.55 * t})`
+            : `rgba(236,238,228,${0.06 + 0.16 * t})`;
+          g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill();
+        }
+      }
+    } else {
+      const W = 12, far = 1700;
+      for (let i = 0; i < 360 / W; i++) {
+        const a0 = -HALF + i * W, a1 = a0 + W;
+        const inBeam = a0 >= -HALF && a1 <= HALF;
+        if (!inBeam && i % 2) continue;
+        const p0 = polar(CX, CY, far, a0), p1 = polar(CX, CY, far, a1);
+        const grad = g.createRadialGradient(CX, CY, R, CX, CY, 1100);
+        if (inBeam) {
+          grad.addColorStop(0, "rgba(200,255,77,0.20)");
+          grad.addColorStop(1, "rgba(200,255,77,0)");
+        } else {
+          grad.addColorStop(0, "rgba(236,238,228,0.07)");
+          grad.addColorStop(1, "rgba(236,238,228,0)");
+        }
+        g.fillStyle = grad;
+        g.beginPath(); g.moveTo(CX, CY); g.lineTo(...p0); g.lineTo(...p1); g.closePath(); g.fill();
+      }
+      g.lineWidth = 1;
+      for (let r = R + 70; r < 1500; r += 70) {
+        g.strokeStyle = `rgba(236,238,228,${0.07 * (1 - smooth(R, 1100, r))})`;
+        g.beginPath(); g.arc(CX, CY, r, 0, Math.PI * 2); g.stroke();
+      }
+      // fade the rays out under the headline
+      const lg = g.createLinearGradient(0, 0, 800, 0);
+      lg.addColorStop(0, "rgba(10,11,9,0.92)"); lg.addColorStop(1, "rgba(10,11,9,0)");
+      g.fillStyle = lg; g.fillRect(0, 0, 800, 900);
+    }
+  }
+</script>
+</body>
+</html>

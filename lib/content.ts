@@ -10,9 +10,27 @@ export const TOKEN = {
   cadence: 60,
   quote: "ETH",
   // Set once deployed. While null the site shows "pending" states and a simulation badge.
-  contractAddress: null as string | null,
+  // TODO: placeholder CA = PONS (a live token, so the trade feed has data). Replace with $FEES at launch.
+  contractAddress: "0x39dBED3a2bd333467115dE45665cC57F813C4571" as string | null,
   splitterAddress: null as string | null,
 };
+
+// Robinhood Chain (Arbitrum Orbit L2, ETH gas). Explorer is Blockscout.
+export const CHAIN = {
+  name: "Robinhood Chain",
+  id: 4663,
+  explorer: "https://robinhoodchain.blockscout.com",
+  rpc: "https://rpc.mainnet.chain.robinhood.com", // public, rate limited; override with RPC_URL
+  // Where swaps settle. Token out of a pool = buy, token into a pool = sell.
+  // Uniswap V4 PoolManager (singleton). Add the pons bonding curve here if it holds tokens itself.
+  pools: ["0x8366a39cc670b4001a1121b8f6a443a643e40951"],
+};
+
+export const explorerTx = (hash: string) => `${CHAIN.explorer}/tx/${hash}`;
+export const explorerAddress = (addr: string) => `${CHAIN.explorer}/address/${addr}`;
+
+// 0x9f3a…c21e
+export const shortHash = (hash: string) => (hash.length > 14 ? `${hash.slice(0, 6)}…${hash.slice(-4)}` : hash);
 
 export const LINKS = {
   buy: "/#buy", // → pons token page at launch
@@ -20,7 +38,7 @@ export const LINKS = {
   x: "#", // → https://x.com/…
   telegram: "#", // → https://t.me/…
   docs: "#", // → docs / GitHub of splitter contract
-  explorer: "#", // → Robinhood Chain explorer
+  explorer: TOKEN.splitterAddress ? explorerAddress(TOKEN.splitterAddress) : CHAIN.explorer,
 };
 
 // Top-level tabs. "sections" are anchors on that same page, shown in the tab's dropdown.
@@ -32,9 +50,9 @@ export const NAV: NavItem[] = [
     label: "Home",
     href: "/",
     sections: [
-      { n: "01", label: "Your cut", hint: "Share × volume calculator", href: "/#cut" },
-      { n: "02", label: "Versus", hint: "Same 3%. Different pocket.", href: "/#versus" },
-      { n: "03", label: "Payday", hint: "Receipts, every 60 seconds", href: "/#payday" },
+      { n: "01", label: "Payday", hint: "Receipts, every 60 seconds", href: "/#payday" },
+      { n: "02", label: "Your cut", hint: "Share × volume calculator", href: "/#cut" },
+      { n: "03", label: "Versus", hint: "Same 3%. Different pocket.", href: "/#versus" },
       { n: "04", label: "How to buy", hint: "Three steps and the CA", href: "/#buy" },
     ],
   },

@@ -24,7 +24,7 @@ export function Versus() {
     <section id="versus" className="relative border-t border-line bg-bg-2 py-28 sm:py-36">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
-          <SectionLabel n="02">Versus everyone else</SectionLabel>
+          <SectionLabel n="03">Versus everyone else</SectionLabel>
         </Reveal>
         <Reveal delay={80}>
           <h2 className="text-[clamp(40px,7vw,96px)] leading-[0.9] font-semibold tracking-[-0.05em]">

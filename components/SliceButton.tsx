@@ -68,8 +68,9 @@ export function SliceButton({
     );
   }
   if (href) {
+    const external = /^https?:/.test(href);
     return (
-      <a href={href} className={cls}>
+      <a href={href} className={cls} {...(external && { target: "_blank", rel: "noopener noreferrer" })}>
         {inner}
       </a>
     );

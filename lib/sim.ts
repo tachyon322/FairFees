@@ -6,7 +6,8 @@
 import { useSyncExternalStore } from "react";
 
 export type Trade = { id: number; side: "buy" | "sell"; eth: number; tax: number };
-export type Split = { id: number; time: string; pot: number; holders: number; hash: string };
+// hash: full 0x-prefixed tx hash (66 chars). simulated: fake receipt (hash won't resolve on the explorer).
+export type Split = { id: number; time: string; pot: number; holders: number; hash: string; simulated: boolean };
 export type Phase = "accruing" | "claiming";
 
 export type SimState = {
@@ -21,11 +22,21 @@ export type SimState = {
 
 const TAX = 0.03;
 
+function hex(n: number) {
+  let s = "";
+  for (let i = 0; i < n; i++) s += "0123456789abcdef"[Math.floor(Math.random() * 16)];
+  return s;
+}
+
+function fakeHash() {
+  return `0x${hex(64)}`;
+}
+
 const SEED_SPLITS: Split[] = [
-  { id: 4817, time: "—", pot: 0.1842, holders: 1284, hash: "0x9f3a…c21e" },
-  { id: 4816, time: "—", pot: 0.2217, holders: 1281, hash: "0x41be…07d9" },
-  { id: 4815, time: "—", pot: 0.1379, holders: 1281, hash: "0xd0c4…9a6f" },
-  { id: 4814, time: "—", pot: 0.2951, holders: 1277, hash: "0x6a12…e38b" },
+  { id: 4817, time: "—", pot: 0.1842, holders: 1284, hash: "0x9f3a1112c695b7e5eab323c59750744ad57ac78c2d64718251f710e5a3a8c21e", simulated: true },
+  { id: 4816, time: "—", pot: 0.2217, holders: 1281, hash: "0x41be21445af8f7acc5de30b16b435e488cca8c824c41c178fa56d4bc6fec07d9", simulated: true },
+  { id: 4815, time: "—", pot: 0.1379, holders: 1281, hash: "0xd0c479c794728c6beb64c19efcc1f58332810a90370b0e7fde23a922d7539a6f", simulated: true },
+  { id: 4814, time: "—", pot: 0.2951, holders: 1277, hash: "0x6a1251d4f462cbd884ce286a643d345126db1c24ffe88a50b71ab93c1f29e38b", simulated: true },
 ];
 
 const initial: SimState = {
@@ -48,11 +59,6 @@ function emit(next: Partial<SimState>) {
   listeners.forEach((l) => l());
 }
 
-function hex(n: number) {
-  let s = "";
-  for (let i = 0; i < n; i++) s += "0123456789abcdef"[Math.floor(Math.random() * 16)];
-  return s;
-}
 
 function clockSecondsLeft() {
   const s = new Date().getSeconds();
@@ -89,7 +95,8 @@ function split() {
     time,
     pot: state.pot,
     holders: state.holders,
-    hash: `0x${hex(4)}…${hex(4)}`,
+    hash: fakeHash(),
+    simulated: true,
   };
   emit({
     phase: "accruing",
@@ -119,6 +126,17 @@ function start() {
     }
     last = left;
   }, 200);
+}
+
+// Entry point for real splitter receipts (e.g. from a Split event watcher / API poll).
+// Pass simulated: false and the full tx hash; the receipt links to it on the explorer.
+export function pushSplit(s: Split) {
+  if (state.splits.some((x) => x.hash === s.hash)) return;
+  emit({
+    splits: [s, ...state.splits].slice(0, 12),
+    totalPaid: state.totalPaid + s.pot,
+    holders: s.holders,
+  });
 }
 
 function subscribe(cb: () => void) {

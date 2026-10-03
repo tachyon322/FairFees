@@ -43,7 +43,7 @@ export function Calculator() {
   return (
     <section id="cut" className="relative mx-auto max-w-6xl border-t border-line px-4 py-28 sm:px-6 sm:py-36">
       <Reveal>
-        <SectionLabel n="01">Your cut</SectionLabel>
+        <SectionLabel n="02">Your cut</SectionLabel>
       </Reveal>
       <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-16">
         <div>

@@ -3,6 +3,7 @@
 import { TextMorph } from "torph/react";
 import { Pulse } from "loading-dev";
 import { fmtEth, useSim } from "@/lib/sim";
+import { explorerTx, shortHash } from "@/lib/content";
 import { Reveal, SectionLabel } from "../Reveal";
 
 export function Receipts() {
@@ -10,10 +11,10 @@ export function Receipts() {
   const claiming = sim.phase === "claiming";
 
   return (
-    <section id="payday" className="relative overflow-hidden py-28 sm:py-36">
+    <section id="payday" className="relative overflow-hidden border-t border-line py-28 sm:py-36">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
-          <SectionLabel n="03">Payday</SectionLabel>
+          <SectionLabel n="01">Payday</SectionLabel>
         </Reveal>
         <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
           <Reveal delay={80}>
@@ -77,7 +78,15 @@ export function Receipts() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-ink-muted">tx</span>
-                  <span>{s.hash}</span>
+                  <a
+                    href={explorerTx(s.hash)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={s.hash}
+                    className="underline decoration-dotted underline-offset-2 hover:decoration-solid"
+                  >
+                    {shortHash(s.hash)} ↗
+                  </a>
                 </div>
                 <div className="dotted my-2" />
                 <div className="text-center text-[10px] tracking-[0.2em] text-ink-muted">SIXTY SECONDS. AGAIN.</div>

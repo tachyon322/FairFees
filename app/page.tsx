@@ -12,9 +12,9 @@ export default function Home() {
       <Preloader />
       <main>
         <Hero />
+        <Receipts />
         <Calculator />
         <Versus />
-        <Receipts />
         <HowToBuy />
         <Outro />
       </main>
